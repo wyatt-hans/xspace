@@ -1,9 +1,9 @@
 /*
- * copyright 2011 <konghan>, All rights reserved.
+ * copyright (c) 2011 konghan, All rights reserved.
  */
 
-#ifndef XSPACE_DIRECTOR_SPACE_SESSION_H_
-#define XSPACE_DIRECTOR_SPACE_SESSION_H_
+#ifndef DIRECTOR_SPACE_SESSION_H_
+#define DIRECTOR_SPACE_SESSION_H_
 
 #include "session.h"
 
@@ -35,5 +35,5 @@ class SpaceSession : public Session {
 
 }}
 
-#endif  // XSPACE_DIRECTOR_SPACE_SESSION_H_
+#endif  // DIRECTOR_SPACE_SESSION_H_
 

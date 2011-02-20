@@ -1,5 +1,5 @@
 /*
- * copyright 2011 <konghan>, All rights reserved.
+ * copyright (c) 2011 konghan, All rights reserved.
  */
 
 #ifndef XSPACE_DIRECTOR_SPACE_SERVICE_H_

@@ -1,5 +1,5 @@
 /*
- * copyright 2011 <konghan>, All rights reserved.
+ * copyright (c) 2011 konghan, All rights reserved.
  */
 
 #include "space_service.h"
