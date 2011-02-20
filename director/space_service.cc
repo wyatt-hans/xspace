@@ -190,11 +190,12 @@ bool SpaceService::RenameSpace(const std::string& oldspace,
 bool SpaceService::Init() {
     repos_ = shared_ptr<SqliteRepos>(new SqliteRepos());
     
-    if (!repos_->Init("space.db")) {
+    if (!repos_->Init("director.db")) {
         ::XSPACELOG(("Load space database fail!\n"));
         repos_ = shared_ptr<SqliteRepos>();
         return false;
     }
+    ::XSPACELOG(("SpaceService : load db ok\n"));
 
     return true;
 }

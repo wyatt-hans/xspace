@@ -19,12 +19,14 @@ using ::apache::thrift::TMessageEventHandler;
 using ::boost::shared_ptr;
 
 void ClientEventHandler::preServe() {
-    ::XSPACELOG(("Director:space service starting ...\n"));
+    ::XSPACELOG(("Director : service starting ...\n"));
     
-    if (service_ != NULL)
+    if (service_ != NULL) {
         service_->Init();
-
-    ::XSPACELOG(("Director:space service started.\n"));
+        ::XSPACELOG(("Director : service started.\n"));
+    } else {
+        ::XSPACELOG(("Director : service not setting.\n"));
+    }
 }
 
 void ClientEventHandler::clientBegin(int socket) {

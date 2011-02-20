@@ -50,6 +50,7 @@ int main(int argc, char **argv)
 
     TNonblockingServer server(spaceProcessor, spaceProtocolFactory, port, threadManager); 
     shared_ptr<ClientEventHandler> cltEventHandler(new ClientEventHandler());
+    cltEventHandler->SetService(spaceHandler);
     server.setServerEventHandler(cltEventHandler);
 
     server.serve();

@@ -21,7 +21,7 @@ thriftcpp = gen-cpp/director_constants.cpp	\
 
 thriftobj = $(patsubst %.cpp, %.o, $(thriftcpp))
 
-target = portalsd
+target = director
 
 CXX = g++
 INCLUDE = -I/usr/local/include/thrift -Igen-cpp -I../include
