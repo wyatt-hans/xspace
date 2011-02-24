@@ -5,10 +5,11 @@ space_objs = space_service.oo \
 mgmt_objs =
 meta_objs =
 
-common = thrift_session.oo	\
-		 sqlite_repos.oo	\
-		 server.oo		\
-		 ../misc/crypto_md5.oo
+common = thrift_session.oo		\
+		 sqlite_repos.oo		\
+		 server.oo				\
+		 ../misc/crypto_md5.oo	\
+		 ../misc/xtracor.oo
 
 objs = $(space_objs) $(mgmt_objs) $(meta_objs) $(common)
 

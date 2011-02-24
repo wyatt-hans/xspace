@@ -19,13 +19,12 @@ class SpaceClient {
     public:
     virtual ~SpaceClient() { }
 
-    bool Setup();
+    bool Setup(const string& name, const string& passwd);
     void Close();
 
-    bool GetOption(const string& optkey, string& optval);
-    bool SetOption(const string& optkey, const string& optval);
-
-    bool GetOptions(map<string,string> optkeyvals);
+    virtual bool GetOption(const string& optkey, string& optval);
+    virtual bool SetOption(const string& optkey, const string& optval);
+    virtual bool GetOptions(map<string,string> optkeyvals);
 
     private:
     string cred_;
@@ -34,7 +33,7 @@ class SpaceClient {
 };
 
 
-class Tanent {
+class Client {
     public:
     typedef shared_ptr<SpaceClient> SpaceClientPtr;
 
@@ -43,6 +42,10 @@ class Tanent {
     bool Close();
 
     SpaceClientPtr GetSpace(const string& space);
+    
+    bool CreateSpace(const string& space, const SpaceType& type);
+    bool DeleteSpace(const string& space);
+    bool RenameSpace(const string& oldspace, const string& newspace);
 };
 
 }}

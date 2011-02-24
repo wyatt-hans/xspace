@@ -32,7 +32,7 @@ using namespace apache::thrift;
 using namespace apache::thrift::protocol;
 using namespace apache::thrift::transport;
 
-using namespace portals;
+using namespace xspace::director;
 using namespace boost;
 
 int main(int argc, char** argv) {
@@ -49,7 +49,7 @@ int main(int argc, char** argv) {
 
     while(i++ < 10)
     {
-        client.CreateSpace("myfilespace", space_type_e::type(0));
+        client.CreateSpace("myfilespace", SpaceType::SPACE_TYPE_FILE);
         client.DeleteSpace("youname");
         sleep(1);
     }

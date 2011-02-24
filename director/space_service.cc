@@ -8,7 +8,7 @@
 
 #include "gen-cpp/SpaceService.h"
 
-#include <xspace.h>
+#include <xtracor.h>
 #include <assert.h>
 
 #include <thrift/TProcessor.h>
@@ -22,6 +22,7 @@ namespace xspace { namespace director {
 
 using boost::shared_ptr;
 using std::string;
+using xspace::xtracor;
 
 bool SpaceService::Setup(const std::string& name,
         const std::string& passwd) {
@@ -74,7 +75,7 @@ void SpaceService::GetSpaceInfo(SpaceInfoRsp& _return,
     }
 
     shared_ptr<SpaceSession> ss = GetSession();
-    if (ss != NULL) {
+    if (ss == NULL) {
         _return.ret = -1;
         return ;
     }
@@ -109,7 +110,7 @@ void SpaceService::GetSpaceList(SpaceListRsp& _return) {
     }
     
     shared_ptr<SpaceSession> ss = GetSession();
-    if (ss != NULL) {
+    if (ss == NULL) {
         _return.ret = -1;
         return ;
     }
@@ -134,16 +135,23 @@ void SpaceService::GetSpaceList(SpaceListRsp& _return) {
 
 bool SpaceService::CreateSpace(const std::string& space,
         const SpaceType::type type) {
-    if (!inited_)
+    xtracor(LOG_INFO, "space service : createspace\n");
+    if (!inited_) {
+        xtracor(LOG_DEBUG, "space service not initialization!\n");
         return false;
-    
-    shared_ptr<SpaceSession> ss = GetSession();
-    if (ss != NULL)
-        return false;
+    }
 
-    if(ss->GetState() != kSessionStateSetuped)
+    shared_ptr<SpaceSession> ss = GetSession();
+    if (ss == NULL) {
+        xtracor(LOG_DEBUG, "session not found!\n");
         return false;
- 
+    }
+
+    if(ss->GetState() != kSessionStateSetuped) {
+        xtracor(LOG_DEBUG, "session not setuped!\n");
+        return false;
+    }
+
     shared_ptr<SqliteRepos> sr = GetRepos();
     assert(sr != NULL);
 
@@ -152,8 +160,10 @@ bool SpaceService::CreateSpace(const std::string& space,
 }
 
 bool SpaceService::DeleteSpace(const std::string& space) {
-    if (!inited_)
+    if (!inited_) {
+        xtracor(LOG_DEBUG, "space service not initialization!\n");
         return false;
+    }
     
     shared_ptr<SpaceSession> ss = GetSession();
     if (ss == NULL)
@@ -191,12 +201,13 @@ bool SpaceService::Init() {
     repos_ = shared_ptr<SqliteRepos>(new SqliteRepos());
     
     if (!repos_->Init("director.db")) {
-        ::XSPACELOG(("Load space database fail!\n"));
+        xtracor(LOG_ERR, "Load space database fail!\n");
         repos_ = shared_ptr<SqliteRepos>();
         return false;
     }
-    ::XSPACELOG(("SpaceService : load db ok\n"));
+    xtracor(LOG_INFO, "SpaceService : load db ok\n");
 
+    inited_ = true;
     return true;
 }
 
@@ -206,6 +217,7 @@ void SpaceService::Fini() {
 
 shared_ptr<SpaceSession> SpaceService::GetSession() {
     int socket = MessageEventHandler::GetSocket();
+    xtracor(LOG_INFO, "current session from:%d\n", socket);
     return this->GetSession(socket);
 }
 
@@ -217,18 +229,20 @@ shared_ptr<SpaceSession> SpaceService::GetSession(int socket) {
         return it->second;
     }
 
+    xtracor(LOG_INFO, "no session with socket:%d\n", socket);
     return shared_ptr<SpaceSession>();
 }
      
 bool SpaceService::SetupSession(int socket) {
     shared_ptr<SpaceSession> ssp = this->GetSession(socket);
-    if (ssp == NULL) {
-        ::XSPACELOG(("Dumplicated socket\n"));
+    if (ssp != NULL) {
+        xtracor(LOG_ERR, "Dumplicated socket:%d\n", socket);
         return false;
     }
 
     ssp = shared_ptr<SpaceSession> (new SpaceSession(socket));
     sessions_[socket] = ssp;
+    xtracor(LOG_INFO, "setup session : %d\n", socket);
     return true;
 }
 

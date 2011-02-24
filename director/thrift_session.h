@@ -31,7 +31,7 @@ class ClientEventHandler: public TServerEventHandler {
     shared_ptr<SpaceService>  service_;
 };
 
-class MessageEventHandler : virtual public TMessageEventHandler {
+class MessageEventHandler : public TMessageEventHandler {
     public:
     void setup();
     void messageBegin(int &socket);
@@ -40,8 +40,8 @@ class MessageEventHandler : virtual public TMessageEventHandler {
     static int GetSocket();
     private:
     static void create_key();
-    static pthread_key_t m_key;
-    static pthread_once_t m_once;
+    static pthread_key_t key_;
+    static pthread_once_t once_;
 };
 }}
 #endif  // DIRECTOR_THRIFT_SESSION_H_

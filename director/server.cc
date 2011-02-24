@@ -6,6 +6,8 @@
 #include "thrift_session.h"
 #include "gen-cpp/SpaceService.h"
 
+#include <xtracor.h>
+
 #include <concurrency/ThreadManager.h>
 #include <concurrency/PosixThreadFactory.h>
 #include <protocol/TBinaryProtocol.h>
@@ -26,18 +28,20 @@ using namespace ::apache::thrift::concurrency;
 using boost::shared_ptr;
 
 using namespace xspace::director;
+using xspace::xtracor_init;
 
 int main(int argc, char **argv) 
 {
     int port = 9090;
     int workerCount =2;
 
+    xtracor_init("director");
+
      // initialize thread pool
     shared_ptr<ThreadManager> threadManager = ThreadManager::newSimpleThreadManager(workerCount);
     shared_ptr<PosixThreadFactory> threadFactory = shared_ptr<PosixThreadFactory>(new PosixThreadFactory());
     threadManager->threadFactory(threadFactory);
     threadManager->start();
-
 
     // initialize space service
     shared_ptr<SpaceService> spaceHandler(new SpaceService());
@@ -49,9 +53,9 @@ int main(int argc, char **argv)
     spaceProcessor->SetEventHandler(msgEventHandler);
 
     TNonblockingServer server(spaceProcessor, spaceProtocolFactory, port, threadManager); 
-    shared_ptr<ClientEventHandler> cltEventHandler(new ClientEventHandler());
-    cltEventHandler->SetService(spaceHandler);
-    server.setServerEventHandler(cltEventHandler);
+    shared_ptr<ClientEventHandler>  ceh(new ClientEventHandler());
+    ceh->SetService(spaceHandler);
+    server.setServerEventHandler(ceh);
 
     server.serve();
     

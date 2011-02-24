@@ -2,9 +2,9 @@
 objs = client.o
 
 thriftsrc = portal.thrift
-thriftobj = ../gen-cpp/portals_constants.o	\
+thriftobj = ../gen-cpp/director_constants.o	\
 			../gen-cpp/SpaceService.o		\
-			../gen-cpp/portals_types.o
+			../gen-cpp/director_types.o
 
 target = client
 
