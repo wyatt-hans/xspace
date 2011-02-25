@@ -38,7 +38,7 @@ void ClientEventHandler::clientBegin(int socket) {
             xtracor(LOG_ERR, "Setup Session with socket:%d fail\n", socket);
             return ;
         }
-        shared_ptr<SpaceSession> ss = service_->GetSession(socket);
+        shared_ptr<Session> ss = service_->GetSession(socket);
         assert(ss != NULL);
 
         ss->Init();
@@ -49,7 +49,7 @@ void ClientEventHandler::clientBegin(int socket) {
 void ClientEventHandler::clientEnd(int socket) {
     xtracor(LOG_INFO, "Logout from socket:%d\n", socket);
     if (service_ != NULL) {
-        shared_ptr<SpaceSession> ss = service_-> GetSession(socket);
+        shared_ptr<Session> ss = service_-> GetSession(socket);
         if (ss == NULL) {
             xtracor(LOG_ERR, "Close Session with socket:%d fail\n", socket);
             return ;

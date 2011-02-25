@@ -5,18 +5,19 @@
 #ifndef DIRECTOR_THRIFT_SESSION_H_
 #define DIRECTOR_THRIFT_SESSION_H_
 
-#include "space_service.h"
+#include "service.h"
 
 #include <boost/shared_ptr.hpp>
+
 #include <thrift/TProcessor.h>
 #include <thrift/server/TServer.h>
 #include <pthread.h>
 
 namespace xspace { namespace director {
 
-using ::apache::thrift::server::TServerEventHandler;
-using ::apache::thrift::TMessageEventHandler;
-using ::boost::shared_ptr;
+using apache::thrift::server::TServerEventHandler;
+using apache::thrift::TMessageEventHandler;
+using boost::shared_ptr;
 
 class ClientEventHandler: public TServerEventHandler {
     public:
@@ -24,11 +25,11 @@ class ClientEventHandler: public TServerEventHandler {
     void clientBegin(int socket);
     void clientEnd(int socket);
 
-    void SetService(shared_ptr<SpaceService> ssp) {
+    void SetService(shared_ptr<Service> ssp) {
         service_ = ssp; }
-    
+
     private:
-    shared_ptr<SpaceService>  service_;
+    shared_ptr<Service>  service_;
 };
 
 class MessageEventHandler : public TMessageEventHandler {

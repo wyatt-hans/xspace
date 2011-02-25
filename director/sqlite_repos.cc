@@ -164,7 +164,7 @@ int64_t SqliteUserRepos::AuthenUser(const string& name, const string& passwd) {
 
     ret = sqlite3_prepare_v2(db_, sql.c_str(), sql.size(), &stmt, NULL);
     if (ret != SQLITE_OK) {
-        return false;
+        return -1;
     }
 
     ret = sqlite3_step(stmt);

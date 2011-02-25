@@ -5,6 +5,7 @@
 #ifndef XSPACE_DIRECTOR_SPACE_SERVICE_H_
 #define XSPACE_DIRECTOR_SPACE_SERVICE_H_
 
+#include "service.h"
 #include "sqlite_repos.h"
 #include "space_session.h"
 
@@ -14,14 +15,16 @@
 
 #include <boost/shared_ptr.hpp>
 #include <string>
+#include <map>
 
 namespace xspace { namespace director {
 
 using apache::thrift::server::TServerEventHandler;
 using boost::shared_ptr;
 using std::string;
+using std::map;
 
-class SpaceService : virtual public SpaceServiceIf {
+class SpaceService : virtual public SpaceServiceIf, virtual public Service {
     public:
 
     typedef shared_ptr<SpaceSession> SpaceSessionPtr;
@@ -46,9 +49,11 @@ class SpaceService : virtual public SpaceServiceIf {
     bool Init();
     void Fini();
 
+    void SetRepos(SqliteReposPtr repos) { repos_ = repos; }
     SqliteReposPtr GetRepos() { return repos_; }
+
     shared_ptr<SpaceSession> GetSession();
-    shared_ptr<SpaceSession> GetSession(int socket);
+    shared_ptr<Session> GetSession(int socket);
      
     bool SetupSession(int socket);
     void CloseSession(int socket);

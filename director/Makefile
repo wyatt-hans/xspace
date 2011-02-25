@@ -2,7 +2,8 @@
 space_objs = space_service.oo \
 			 space_session.oo
 
-mgmt_objs =
+mgmt_objs = mgmt_service.oo	\
+			mgmt_session.oo
 meta_objs =
 
 common = thrift_session.oo		\

@@ -49,9 +49,10 @@ service MetaService {
 }
 
 struct MgmtUserInfo {
-    1:i64    uid,
-    2:string name,
-    3:string passwd,
+    1:i32    ret;
+    2:i64    uid,
+    3:string name,
+    4:string passwd,
 }
 
 service MgmtService {
@@ -74,5 +75,4 @@ service MgmtService {
     bool AddMetaServer(1:string addr, 2:i32 port);
     bool RmvMetaServer(1:i64 msaid);
     list<i64> GetAllMetaServer();
-    list<i64> GetMetaServer(1:i64 uid, 2:string space);
 }

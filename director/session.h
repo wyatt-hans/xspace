@@ -5,14 +5,7 @@
 #ifndef DIRECTOR_SESSION_H_
 #define DIRECTOR_SESSION_H_
 
-#include <boost/shared_ptr.hpp>
-
-#include <map>
-
 namespace xspace { namespace director {
-
-using boost::shared_ptr;
-using std::map;
 
 enum SessionState {
     kSessionStateIdle = 0,
@@ -22,7 +15,7 @@ enum SessionState {
 };
 
 class Session {
- public:
+    public:
     explicit Session(int socket) : socket_(socket),
             state_(kSessionStateIdle) {}
 
@@ -31,7 +24,8 @@ class Session {
 
     virtual bool Init() = 0;
     virtual void Fini() = 0;
- private:
+    
+    private:
     int socket_;
     SessionState state_;
 };

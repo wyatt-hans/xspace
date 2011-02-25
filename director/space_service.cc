@@ -21,6 +21,7 @@
 namespace xspace { namespace director {
 
 using boost::shared_ptr;
+using boost::dynamic_pointer_cast;
 using std::string;
 using xspace::xtracor;
 
@@ -218,10 +219,10 @@ void SpaceService::Fini() {
 shared_ptr<SpaceSession> SpaceService::GetSession() {
     int socket = MessageEventHandler::GetSocket();
     xtracor(LOG_INFO, "current session from:%d\n", socket);
-    return this->GetSession(socket);
+    return dynamic_pointer_cast<SpaceSession>(this->GetSession(socket));
 }
 
-shared_ptr<SpaceSession> SpaceService::GetSession(int socket) {
+shared_ptr<Session> SpaceService::GetSession(int socket) {
     map<int, SpaceSessionPtr>::iterator it;
 
     it = sessions_.find(socket);
@@ -234,14 +235,13 @@ shared_ptr<SpaceSession> SpaceService::GetSession(int socket) {
 }
      
 bool SpaceService::SetupSession(int socket) {
-    shared_ptr<SpaceSession> ssp = this->GetSession(socket);
+    shared_ptr<Session> ssp = this->GetSession(socket);
     if (ssp != NULL) {
         xtracor(LOG_ERR, "Dumplicated socket:%d\n", socket);
         return false;
     }
 
-    ssp = shared_ptr<SpaceSession> (new SpaceSession(socket));
-    sessions_[socket] = ssp;
+    sessions_[socket] = shared_ptr<SpaceSession> (new SpaceSession(socket));
     xtracor(LOG_INFO, "setup session : %d\n", socket);
     return true;
 }
